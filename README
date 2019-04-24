@@ -1,0 +1,28 @@
+Jonathan Pham
+CS 4760 
+Assignment 5: Resource Management
+Due: 04/24/19
+
+The purpose of this project was to design and implement a resource management
+tool for OSS, my operating system simulator. This project is intended to use
+deadlock avoidance to manage resources, with processes being blocked on their 
+requests until requests are safe. I chose to use the Banker's Algorithm for
+deadlock avoidance which is implement in oss.c and adapted from 
+www.geeksforgeeks.org/program-bankers-algorithm-set-1-safety-algorithm/
+
+To implement:
+1) make
+2a) ./oss
+2b) ./oss -v //verbose mode
+
+Notes:
+Logfile resource.log will display processes requests, granted, terminated, detection
+of processes and allocated resource table (not fully working). If given the 
+opportunity, I will work on this portion for project 7 to fix some bugs.
+
+Achievements:
+Main oss exectuables forks child processes at random times, creates new processes when
+forked, table to keep track of system state, activities including process requests,
+granted, termination, detection is output to resource.log and statistics are displayed 
+to stderr as well. Shared memory and message queue are set up appropriately and defined
+in resourceManagement.h file
