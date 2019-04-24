@@ -75,13 +75,13 @@ int main ( int argc, char *argv[] ) {
         shmClockKey = 2016;
         if ( ( shmClockID = shmget ( shmClockKey, ( 2 * ( sizeof ( unsigned int ) ) ), IPC_CREAT | 0666 ) ) == -1 ) {
                 perror ( "OSS: failed to create shared memory space for simulated clock.\n" );
-                return 1;
+                return ( 1 );
         }
 
         shmBlockedKey = 3017;
         if ( ( shmBlockedID = shmget ( shmBlockedKey, ( totalProcessLimit * ( sizeof ( int ) ) ), IPC_CREAT | 0666 ) ) == -1 ) {
                 perror ( "OSS: failed to create shared memory for blocked USER process array." );
-                return 1;
+                return ( 1 );
         }
 
         // Attach to and initialize shared memory for clock and blocked process array
@@ -89,8 +89,8 @@ int main ( int argc, char *argv[] ) {
                 perror ( "OSS: failed to attach shared memory space for simulated clock.\n" );
                 return 1;
         }
-        shmClock[0] = 0; // Will hold the seconds value for the simulated clock
-        shmClock[1] = 0; // Will hold the nanoseconds value for the simulated clock
+        shmClock[0] = 0; // Seconds for clock
+        shmClock[1] = 0; // Nanoseconds for clock
 
         if ( ( shmBlocked = (int *) shmat ( shmBlockedID, NULL, 0 ) ) < 0 ) {
                 perror ( "OSS: failed to attach shared memory space for blocked process array.\n" );
