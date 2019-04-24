@@ -9,14 +9,14 @@ typedef struct {
         int topQueue;
         int bottomQueue;
         int size;
-        unsigned capacity;
         int *array;
         int pid;
+	unsigned capacity;
 } Queue;
 
 FILE *fp;
 bool isSafeState ( int available[], int maximum[][maxResources], int allot[][maxResources] );
-const int maxRunningProcesses = 18;     // Max processes alive at one time
+const int maxRunningProcesses = 19;     // Max processes alive at one time
 const int totalProcessLimit = 100;      // Max 100 processes over course of program
 const int maxAmountOfEachResource = 4;
 int isFull ( Queue* queue );
@@ -37,7 +37,7 @@ void displayStatistics();
 void killProcesses();
 
 int main ( int argc, char *argv[] ) {
-        char logName[20] = "resource.log";
+        char logName[20] = "resource.log"; // Pertinent information will be stored in resource.log
         fp = fopen ( logName, "w+" );
         srand ( time ( NULL ) );
 
