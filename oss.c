@@ -4,6 +4,8 @@
 // Due: 04/24/2019
 
 #include "resourceManagement.h"
+#include <stdio.h>
+#include <stdlib.h>
 
 typedef struct {
         int topQueue;
@@ -141,8 +143,8 @@ int main ( int argc, char *argv[] ) {
         }
 
         while ( 1 ) {
-                // Terminate if log file exceeds 10000 lines
-                if ( numberOfLines >= 10000 ) {
+                // Terminate if log file exceeds 100000 lines
+                if ( numberOfLines >= 100000 ) {
                         fprintf ( fp, "OSS: log file has exceeded max length. Program terminating!\n" );
                         kill ( getpid(), SIGINT );
                 }
@@ -169,7 +171,7 @@ int main ( int argc, char *argv[] ) {
                                 maxrscTable[processIndex][i] = ( rand() % ( maxAmountOfEachResource - 1 + 1 ) + 1 );
                         }
 
-                        fprintf ( fp, "Max Claim Vector for new newly generated process: Process %d\n", processIndex);
+                        fprintf ( fp, "Master has a newly generated process P%d\n", processIndex);
                         for ( i = 0; i < 20; ++i ) {
                                 fprintf ( fp, "%d: %d\t", i, maxrscTable[processIndex][i] );
                         }
@@ -290,7 +292,6 @@ int main ( int argc, char *argv[] ) {
                                 // Place that process's index in the blocked queue
                                 enQueue ( blockedQueue, tempIndex );
 
-                                // Set the blocked process flag in shared memory for USER to see
                                 shmBlocked[tempIndex] = 1;
 
                                 fprintf ( fp, "Master running deadlock detection at time %d:%d.\n\tP%d was denied its request of R%d and was deadlocked\n",
@@ -411,13 +412,10 @@ bool isSafeState ( int available[], int maximum[][maxResources], int allot[][max
         markerChk++;
         int index;
         int count = 0;
-
         int need[maxProcesses][maxResources];
         processCalculation ( need, maximum, allot ); // Function to calculate need matrix
-
         bool finish[maxProcesses] = { 0 };
 
-        // Make a copy of the available resources vector.
         int work[maxResources];
         int i;
         for ( i = 0; i < maxResources; ++i ) {
@@ -426,21 +424,21 @@ bool isSafeState ( int available[], int maximum[][maxResources], int allot[][max
 
 
         while ( count < maxProcesses ) {
-                int p;
+                int proc;
                 bool found = false;
-                for ( p = 0; p < maxProcesses; ++p ) {
-                        if ( finish[p] == 0 ) {
+                for ( proc = 0; proc < maxProcesses; ++proc ) {
+                        if ( finish[proc] == 0 ) {
                                 int j;
                                 for ( j = 0; j < maxResources; ++j ) {
-                                        if ( need[p][j] > work[j] )
+                                        if ( need[proc][j] > work[j] )
                                             break;
                                 }
                                 if ( j == maxResources ) {
                                         int k;
                                         for ( k = 0; k < maxResources; ++k ) {
-                                                work[k] += allot[p][k];
+                                                work[k] += allot[proc][k];
                                         }
-                                        finish[p] = 1;
+                                        finish[proc] = 1;
                                         found = true;
                                 }
                         }
